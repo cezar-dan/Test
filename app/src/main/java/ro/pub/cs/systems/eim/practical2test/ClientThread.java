@@ -30,27 +30,37 @@ public class ClientThread extends Thread {
     @Override
     public void run() {
         try {
+            // tries to establish a socket connection to the server
             socket = new Socket(address, port);
             if (socket == null) {
                 Log.e(Constants.TAG, "[CLIENT THREAD] Could not create socket!");
                 return;
             }
+
+            // gets the reader and writer for the socket
             BufferedReader bufferedReader = Utilities.getReader(socket);
             PrintWriter printWriter = Utilities.getWriter(socket);
             if (bufferedReader == null || printWriter == null) {
                 Log.e(Constants.TAG, "[CLIENT THREAD] Buffered Reader / Print Writer are null!");
                 return;
             }
+
+            // sends the city and information type to the server
             printWriter.println(city);
             printWriter.flush();
             printWriter.println(informationType);
             printWriter.flush();
             String weatherInformation;
+
+            // reads the weather information from the server
             while ((weatherInformation = bufferedReader.readLine()) != null) {
                 final String finalizedWeateherInformation = weatherInformation;
+
+                // updates the UI with the weather information. This is done using postt() method to ensure it is executed on UI thread
                 weatherForecastTextView.post(() -> weatherForecastTextView.setText(finalizedWeateherInformation));
             }
-        } catch (IOException ioException) {
+        } // if an exception occurs, it is logged
+        catch (IOException ioException) {
             Log.e(Constants.TAG, "[CLIENT THREAD] An exception has occurred: " + ioException.getMessage());
             if (Constants.DEBUG) {
                 ioException.printStackTrace();
@@ -58,6 +68,7 @@ public class ClientThread extends Thread {
         } finally {
             if (socket != null) {
                 try {
+                    // closes the socket regardless of errors or not
                     socket.close();
                 } catch (IOException ioException) {
                     Log.e(Constants.TAG, "[CLIENT THREAD] An exception has occurred: " + ioException.getMessage());

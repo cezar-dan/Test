@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
+            // Retrieves the server port. Checks if it is empty or not
+            // Creates a new server thread with the port and starts it
             String serverPort = serverPortEditText.getText().toString();
             if (serverPort == null || serverPort.isEmpty()) {
                 Toast.makeText(getApplicationContext(), "[MAIN ACTIVITY] Server port should be filled!", Toast.LENGTH_SHORT).show();
@@ -52,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
+
+            // Retrieves the client address and port. Checks if they are empty or not
+            //  Checks if the server thread is alive. Then creates a new client thread with the address, port, city and information type
+            //  and starts it
             String clientAddress = clientAddressEditText.getText().toString();
             String clientPort = clientPortEditText.getText().toString();
             if (clientAddress.isEmpty() || clientPort.isEmpty()) {
@@ -103,5 +109,4 @@ public class MainActivity extends AppCompatActivity {
         }
         super.onDestroy();
     }
-
 }
