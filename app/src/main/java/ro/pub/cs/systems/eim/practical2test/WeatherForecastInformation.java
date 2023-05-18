@@ -66,13 +66,6 @@ public class WeatherForecastInformation {
 
     @Override
     public String toString() {
-        return "WeatherForecastInformation{" +
-                "temperature='" + temperature + '\'' +
-                ", windSpeed='" + windSpeed + '\'' +
-                ", condition='" + condition + '\'' +
-                ", pressure='" + pressure + '\'' +
-                ", humidity='" + humidity + '\'' +
-                '}';
+        return "WeatherForecastInformation{" + "temperature='" + temperature + '\'' + ", windSpeed='" + windSpeed + '\'' + ", condition='" + condition + '\'' + ", pressure='" + pressure + '\'' + ", humidity='" + humidity + '\'' + '}';
     }
-
 }

@@ -1,6 +1,6 @@
 package ro.pub.cs.systems.eim.practical2test;
 
-public interface Constants {
+public class Constants {
 
     final public static String TAG = "[PracticalTest02]";
 
@@ -9,7 +9,6 @@ public interface Constants {
     final public static String WEB_SERVICE_API_KEY = "dbd3b02d8958d62185d02e944cd5f522";
     final public static String WEB_SERVICE_ADDRESS = "http://api.openweathermap.org/data/2.5/weather";
     final public static String WEB_SERVICE_MODE = "json";
-    //final public static String WEB_SERVICE_ADDRESS = "https://www.wunderground.com/cgi-bin/findweather/getForecast";
 
     final public static String UNITS = "metric";
     final public static String TEMPERATURE = "temperature";

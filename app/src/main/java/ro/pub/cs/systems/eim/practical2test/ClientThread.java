@@ -11,11 +11,11 @@ import java.net.Socket;
 
 public class ClientThread extends Thread {
 
-    private String address;
-    private int port;
-    private String city;
-    private String informationType;
-    private TextView weatherForecastTextView;
+    private final String address;
+    private final int port;
+    private final String city;
+    private final String informationType;
+    private final TextView weatherForecastTextView;
 
     private Socket socket;
 
@@ -48,12 +48,7 @@ public class ClientThread extends Thread {
             String weatherInformation;
             while ((weatherInformation = bufferedReader.readLine()) != null) {
                 final String finalizedWeateherInformation = weatherInformation;
-                weatherForecastTextView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        weatherForecastTextView.setText(finalizedWeateherInformation);
-                    }
-                });
+                weatherForecastTextView.post(() -> weatherForecastTextView.setText(finalizedWeateherInformation));
             }
         } catch (IOException ioException) {
             Log.e(Constants.TAG, "[CLIENT THREAD] An exception has occurred: " + ioException.getMessage());

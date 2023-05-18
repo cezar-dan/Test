@@ -35,8 +35,8 @@ import cz.msebera.android.httpclient.util.EntityUtils;
 
 public class CommunicationThread extends Thread {
 
-    private ServerThread serverThread;
-    private Socket socket;
+    private final ServerThread serverThread;
+    private final Socket socket;
 
     public CommunicationThread(ServerThread serverThread, Socket socket) {
         this.serverThread = serverThread;
@@ -72,7 +72,7 @@ public class CommunicationThread extends Thread {
                 Log.i(Constants.TAG, "[COMMUNICATION THREAD] Getting the information from the webservice...");
                 HttpClient httpClient = new DefaultHttpClient();
                 String pageSourceCode = "";
-                if(false) {
+                if (false) {
                     HttpPost httpPost = new HttpPost(Constants.WEB_SERVICE_ADDRESS);
                     List<NameValuePair> params = new ArrayList<>();
                     params.add(new BasicNameValuePair("q", city));
@@ -96,8 +96,7 @@ public class CommunicationThread extends Thread {
                 if (pageSourceCode == null) {
                     Log.e(Constants.TAG, "[COMMUNICATION THREAD] Error getting the information from the webservice!");
                     return;
-                } else
-                    Log.i(Constants.TAG, pageSourceCode );
+                } else Log.i(Constants.TAG, pageSourceCode);
 
                 // Updated for openweather API
                 if (false) {
@@ -116,9 +115,7 @@ public class CommunicationThread extends Thread {
                             String condition = currentObservation.getString(Constants.CONDITION);
                             String pressure = currentObservation.getString(Constants.PRESSURE);
                             String humidity = currentObservation.getString(Constants.HUMIDITY);
-                            weatherForecastInformation = new WeatherForecastInformation(
-                                    temperature, windSpeed, condition, pressure, humidity
-                            );
+                            weatherForecastInformation = new WeatherForecastInformation(temperature, windSpeed, condition, pressure, humidity);
                             serverThread.setData(city, weatherForecastInformation);
                             break;
                         }
@@ -128,13 +125,13 @@ public class CommunicationThread extends Thread {
 
                     JSONArray weatherArray = content.getJSONArray(Constants.WEATHER);
                     JSONObject weather;
-                    String condition = "";
+                    StringBuilder condition = new StringBuilder();
                     for (int i = 0; i < weatherArray.length(); i++) {
                         weather = weatherArray.getJSONObject(i);
-                        condition += weather.getString(Constants.MAIN) + " : " + weather.getString(Constants.DESCRIPTION);
+                        condition.append(weather.getString(Constants.MAIN)).append(" : ").append(weather.getString(Constants.DESCRIPTION));
 
                         if (i < weatherArray.length() - 1) {
-                            condition += ";";
+                            condition.append(";");
                         }
                     }
 
@@ -146,9 +143,7 @@ public class CommunicationThread extends Thread {
                     JSONObject wind = content.getJSONObject(Constants.WIND);
                     String windSpeed = wind.getString(Constants.SPEED);
 
-                    weatherForecastInformation = new WeatherForecastInformation(
-                            temperature, windSpeed, condition, pressure, humidity
-                    );
+                    weatherForecastInformation = new WeatherForecastInformation(temperature, windSpeed, condition.toString(), pressure, humidity);
                     serverThread.setData(city, weatherForecastInformation);
                 }
             }
@@ -157,7 +152,7 @@ public class CommunicationThread extends Thread {
                 return;
             }
             String result = null;
-            switch(informationType) {
+            switch (informationType) {
                 case Constants.ALL:
                     result = weatherForecastInformation.toString();
                     break;
@@ -181,15 +176,10 @@ public class CommunicationThread extends Thread {
             }
             printWriter.println(result);
             printWriter.flush();
-        } catch (IOException ioException) {
+        } catch (IOException | JSONException ioException) {
             Log.e(Constants.TAG, "[COMMUNICATION THREAD] An exception has occurred: " + ioException.getMessage());
             if (Constants.DEBUG) {
                 ioException.printStackTrace();
-            }
-        } catch (JSONException jsonException) {
-            Log.e(Constants.TAG, "[COMMUNICATION THREAD] An exception has occurred: " + jsonException.getMessage());
-            if (Constants.DEBUG) {
-                jsonException.printStackTrace();
             }
         } finally {
             if (socket != null) {

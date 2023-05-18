@@ -7,9 +7,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 
-import cz.msebera.android.httpclient.client.ClientProtocolException;
-
-
 public class ServerThread extends Thread {
 
     private int port = 0;
@@ -64,15 +61,10 @@ public class ServerThread extends Thread {
                 CommunicationThread communicationThread = new CommunicationThread(this, socket);
                 communicationThread.start();
             }
-        } catch (ClientProtocolException clientProtocolException) {
+        } catch (IOException clientProtocolException) {
             Log.e(Constants.TAG, "[SERVER THREAD] An exception has occurred: " + clientProtocolException.getMessage());
             if (Constants.DEBUG) {
                 clientProtocolException.printStackTrace();
-            }
-        } catch (IOException ioException) {
-            Log.e(Constants.TAG, "[SERVER THREAD] An exception has occurred: " + ioException.getMessage());
-            if (Constants.DEBUG) {
-                ioException.printStackTrace();
             }
         }
     }
@@ -90,5 +82,4 @@ public class ServerThread extends Thread {
             }
         }
     }
-
 }
