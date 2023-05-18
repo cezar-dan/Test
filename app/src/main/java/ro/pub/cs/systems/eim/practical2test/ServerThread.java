@@ -9,13 +9,11 @@ import java.util.HashMap;
 
 public class ServerThread extends Thread {
 
-    private int port;
     private ServerSocket serverSocket = null;
 
     private final HashMap<String, WeatherForecastInformation> data;
 
     public ServerThread(int port) {
-        this.port = port;
         try {
             this.serverSocket = new ServerSocket(port);
         } catch (IOException ioException) {
@@ -25,18 +23,6 @@ public class ServerThread extends Thread {
             }
         }
         this.data = new HashMap<>();
-    }
-
-    public void setPort(int port) {
-        this.port = port;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public void setServerSocket(ServerSocket serverSocket) {
-        this.serverSocket = serverSocket;
     }
 
     public ServerSocket getServerSocket() {

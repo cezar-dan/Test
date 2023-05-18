@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
             // Retrieves the server port. Checks if it is empty or not
             // Creates a new server thread with the port and starts it
             String serverPort = serverPortEditText.getText().toString();
-            if (serverPort == null || serverPort.isEmpty()) {
+            if (serverPort.isEmpty()) {
                 Toast.makeText(getApplicationContext(), "[MAIN ACTIVITY] Server port should be filled!", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
             }
             serverThread.start();
         }
-
     }
 
     private final GetWeatherForecastButtonClickListener getWeatherForecastButtonClickListener = new GetWeatherForecastButtonClickListener();

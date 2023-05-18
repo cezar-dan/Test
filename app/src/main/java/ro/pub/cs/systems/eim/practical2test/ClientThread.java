@@ -32,18 +32,10 @@ public class ClientThread extends Thread {
         try {
             // tries to establish a socket connection to the server
             socket = new Socket(address, port);
-            if (socket == null) {
-                Log.e(Constants.TAG, "[CLIENT THREAD] Could not create socket!");
-                return;
-            }
 
             // gets the reader and writer for the socket
             BufferedReader bufferedReader = Utilities.getReader(socket);
             PrintWriter printWriter = Utilities.getWriter(socket);
-            if (bufferedReader == null || printWriter == null) {
-                Log.e(Constants.TAG, "[CLIENT THREAD] Buffered Reader / Print Writer are null!");
-                return;
-            }
 
             // sends the city and information type to the server
             printWriter.println(city);

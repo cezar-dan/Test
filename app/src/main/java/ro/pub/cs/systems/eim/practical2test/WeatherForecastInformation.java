@@ -1,9 +1,11 @@
 package ro.pub.cs.systems.eim.practical2test;
 
+import androidx.annotation.NonNull;
+
 public class WeatherForecastInformation {
 
     private final String temperature;
-    private String windSpeed;
+    private final String windSpeed;
     private final String condition;
     private final String pressure;
     private final String humidity;
@@ -24,10 +26,6 @@ public class WeatherForecastInformation {
         return windSpeed;
     }
 
-    public void setWindSpeed(String windSpeed) {
-        this.windSpeed = windSpeed;
-    }
-
     public String getCondition() {
         return condition;
     }
@@ -40,6 +38,7 @@ public class WeatherForecastInformation {
         return humidity;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "WeatherForecastInformation{" + "temperature='" + temperature + '\'' + ", windSpeed='" + windSpeed + '\'' + ", condition='" + condition + '\'' + ", pressure='" + pressure + '\'' + ", humidity='" + humidity + '\'' + '}';

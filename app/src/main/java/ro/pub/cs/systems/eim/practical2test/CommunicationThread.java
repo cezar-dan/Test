@@ -45,10 +45,6 @@ public class CommunicationThread extends Thread {
             // Create BufferedReader and PrintWriter instances for reading from and writing to the socket
             BufferedReader bufferedReader = Utilities.getReader(socket);
             PrintWriter printWriter = Utilities.getWriter(socket);
-            if (bufferedReader == null || printWriter == null) {
-                Log.e(Constants.TAG, "[COMMUNICATION THREAD] Buffered Reader / Print Writer are null!");
-                return;
-            }
             Log.i(Constants.TAG, "[COMMUNICATION THREAD] Waiting for parameters from client (city / information type!");
 
             // Read the city and informationType values sent by the client
@@ -61,7 +57,7 @@ public class CommunicationThread extends Thread {
 
             // It checks whether the serverThread has already received the weather forecast information for the given city.
             HashMap<String, WeatherForecastInformation> data = serverThread.getData();
-            WeatherForecastInformation weatherForecastInformation = null;
+            WeatherForecastInformation weatherForecastInformation;
             if (data.containsKey(city)) {
                 Log.i(Constants.TAG, "[COMMUNICATION THREAD] Getting the information from the cache...");
                 weatherForecastInformation = data.get(city);
@@ -148,14 +144,12 @@ public class CommunicationThread extends Thread {
                 ioException.printStackTrace();
             }
         } finally {
-            if (socket != null) {
-                try {
-                    socket.close();
-                } catch (IOException ioException) {
-                    Log.e(Constants.TAG, "[COMMUNICATION THREAD] An exception has occurred: " + ioException.getMessage());
-                    if (Constants.DEBUG) {
-                        ioException.printStackTrace();
-                    }
+            try {
+                socket.close();
+            } catch (IOException ioException) {
+                Log.e(Constants.TAG, "[COMMUNICATION THREAD] An exception has occurred: " + ioException.getMessage());
+                if (Constants.DEBUG) {
+                    ioException.printStackTrace();
                 }
             }
         }
