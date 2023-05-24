@@ -5,7 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,9 +19,9 @@ public class MainActivity extends AppCompatActivity {
     // Client widgets
     private EditText clientAddressEditText = null;
     private EditText clientPortEditText = null;
-    private EditText cityEditText = null;
-    private Spinner informationTypeSpinner = null;
-    private TextView weatherForecastTextView = null;
+    private EditText pokemonNameEditText = null;
+    private TextView pokemonInfoTextView = null;
+    private ImageView pokemonImageView = null;
 
     private ServerThread serverThread = null;
 
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private final GetWeatherForecastButtonClickListener getWeatherForecastButtonClickListener = new GetWeatherForecastButtonClickListener();
+    private final GetWeatherForecastButtonClickListener getPokemonInfoButtonClickListener = new GetWeatherForecastButtonClickListener();
 
     private class GetWeatherForecastButtonClickListener implements Button.OnClickListener {
 
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View view) {
 
             // Retrieves the client address and port. Checks if they are empty or not
-            //  Checks if the server thread is alive. Then creates a new client thread with the address, port, city and information type
+            //  Checks if the server thread is alive. Then creates a new client thread with the address, port, pokemonName and information type
             //  and starts it
             String clientAddress = clientAddressEditText.getText().toString();
             String clientPort = clientPortEditText.getText().toString();
@@ -67,16 +67,15 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "[MAIN ACTIVITY] There is no server to connect to!", Toast.LENGTH_SHORT).show();
                 return;
             }
-            String city = cityEditText.getText().toString();
-            String informationType = informationTypeSpinner.getSelectedItem().toString();
-            if (city.isEmpty() || informationType.isEmpty()) {
-                Toast.makeText(getApplicationContext(), "[MAIN ACTIVITY] Parameters from client (city / information type) should be filled", Toast.LENGTH_SHORT).show();
+            String pokemonName = pokemonNameEditText.getText().toString();
+            if (pokemonName.isEmpty()) {
+                Toast.makeText(getApplicationContext(), "[MAIN ACTIVITY] Parameters from client (pokemonName) should be filled", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            weatherForecastTextView.setText(Constants.EMPTY_STRING);
+            pokemonInfoTextView.setText(Constants.EMPTY_STRING);
 
-            ClientThread clientThread = new ClientThread(clientAddress, Integer.parseInt(clientPort), city, informationType, weatherForecastTextView);
+            ClientThread clientThread = new ClientThread(clientAddress, Integer.parseInt(clientPort), pokemonName, pokemonInfoTextView, pokemonImageView);
             clientThread.start();
         }
     }
@@ -93,11 +92,11 @@ public class MainActivity extends AppCompatActivity {
 
         clientAddressEditText = findViewById(R.id.client_address_edit_text);
         clientPortEditText = findViewById(R.id.client_port_edit_text);
-        cityEditText = findViewById(R.id.city_edit_text);
-        informationTypeSpinner = findViewById(R.id.information_type_spinner);
-        Button getWeatherForecastButton = findViewById(R.id.get_weather_forecast_button);
-        getWeatherForecastButton.setOnClickListener(getWeatherForecastButtonClickListener);
-        weatherForecastTextView = findViewById(R.id.weather_forecast_text_view);
+        pokemonNameEditText = findViewById(R.id.pokemon_name_edit_text);
+        Button getPokemonInfoButton = findViewById(R.id.get_pokemon_info_button);
+        getPokemonInfoButton.setOnClickListener(getPokemonInfoButtonClickListener);
+        pokemonInfoTextView = findViewById(R.id.pokemon_info_text_view);
+        pokemonImageView = findViewById(R.id.imageView);
     }
 
     @Override

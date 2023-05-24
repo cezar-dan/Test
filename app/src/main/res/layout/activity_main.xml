@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="ro.pub.cs.systems.eim.practicaltest02.view.PracticalTest02MainActivity">
+    tools:context="ro.pub.cs.systems.eim.practical2test.MainActivity">
 
     <TextView
         android:layout_width="wrap_content"
@@ -29,7 +29,8 @@
                 android:id="@+id/server_port_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/server_port"/>
+                android:hint="@string/server_port"
+                android:text="@string/_9080"/>
 
         </ScrollView>
 
@@ -75,7 +76,8 @@
                 android:id="@+id/client_address_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/client_address"/>
+                android:hint="@string/client_address"
+                android:text="@string/localhost"/>
 
         </ScrollView>
 
@@ -88,7 +90,8 @@
                 android:id="@+id/client_port_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/client_port"/>
+                android:hint="@string/client_port"
+                android:text="@string/_9080"/>
 
         </ScrollView>
 
@@ -101,44 +104,37 @@
         android:columnCount="2">
 
         <EditText
-            android:id="@+id/city_edit_text"
+            android:id="@+id/pokemon_name_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="5"
-            android:hint="@string/city"
+            android:hint="@string/pokemon_name"
             android:layout_row="0"
             android:layout_column="0"/>
 
-        <Spinner
-            android:id="@+id/information_type_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:entries="@array/information_types"
-            android:layout_row="1"
-            android:layout_column="0"/>
-
         <Button
-            android:id="@+id/get_weather_forecast_button"
+            android:id="@+id/get_pokemon_info_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/get_weather_forecast"
+            android:text="@string/get_pokemon_info"
             android:layout_row="0"
             android:layout_rowSpan="2"
             android:layout_column="1"/>
 
     </GridLayout>
 
-    <ScrollView
+    <TextView
+        android:id="@+id/pokemon_info_text_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:maxLines="10"/>
 
-        <TextView
-            android:id="@+id/weather_forecast_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="10"/>
 
-    </ScrollView>
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="334dp"
+        app:srcCompat="@android:drawable/ic_menu_help" />
 
 </LinearLayout>

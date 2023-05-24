@@ -1,6 +1,8 @@
 package ro.pub.cs.systems.eim.practical2test;
 
+import android.graphics.Bitmap;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
@@ -13,18 +15,18 @@ public class ClientThread extends Thread {
 
     private final String address;
     private final int port;
-    private final String city;
-    private final String informationType;
-    private final TextView weatherForecastTextView;
+    private final String pokemonName;
+    private final TextView pokemonInfoTextView;
+    private final ImageView pokemonImageView;
 
     private Socket socket;
 
-    public ClientThread(String address, int port, String city, String informationType, TextView weatherForecastTextView) {
+    public ClientThread(String address, int port, String pokemonName, TextView pokemonInfoTextView, ImageView pokemonImageView) {
         this.address = address;
         this.port = port;
-        this.city = city;
-        this.informationType = informationType;
-        this.weatherForecastTextView = weatherForecastTextView;
+        this.pokemonName = pokemonName;
+        this.pokemonInfoTextView = pokemonInfoTextView;
+        this.pokemonImageView = pokemonImageView;
     }
 
     @Override
@@ -38,22 +40,35 @@ public class ClientThread extends Thread {
             PrintWriter printWriter = Utilities.getWriter(socket);
 
             // sends the city and information type to the server
-            printWriter.println(city);
+            printWriter.println(pokemonName);
             printWriter.flush();
-            printWriter.println(informationType);
-            printWriter.flush();
-            String weatherInformation;
+            String pokemonInformation;
 
             // reads the weather information from the server
-            while ((weatherInformation = bufferedReader.readLine()) != null) {
-                final String finalizedWeateherInformation = weatherInformation;
-
-                // updates the UI with the weather information. This is done using postt() method to ensure it is executed on UI thread
-                weatherForecastTextView.post(() -> weatherForecastTextView.setText(finalizedWeateherInformation));
+            StringBuilder receivedOutput = new StringBuilder();
+            if ((pokemonInformation = bufferedReader.readLine()) != null) {
+                receivedOutput.append(pokemonInformation).append("\n");
+                receivedOutput.append(bufferedReader.readLine()).append("\n");
+            } else {
+                pokemonInfoTextView.post(() -> pokemonInfoTextView.setText(new String("Specified pokemon does not exist!")));
+                pokemonImageView.post(() -> pokemonImageView.setImageBitmap(null));
+                return;
             }
+            while ((pokemonInformation = bufferedReader.readLine()) != null) {
+                receivedOutput.append(pokemonInformation);
+            }
+
+            String[] finalizedPokemonInfo = receivedOutput.toString().split("\n");
+            Bitmap bmp = Utilities.stringToBitmap(finalizedPokemonInfo[2]);
+            finalizedPokemonInfo[2] = "";
+
+            // updates the UI with the weather information. This is done using post() method to ensure it is executed on UI thread
+            pokemonInfoTextView.post(() -> pokemonInfoTextView.setText(String.join("\n", finalizedPokemonInfo)));
+            pokemonImageView.post(() -> pokemonImageView.setImageBitmap(bmp));
+
         } // if an exception occurs, it is logged
         catch (IOException ioException) {
-            Log.e(Constants.TAG, "[CLIENT THREAD] An exception has occurred: " + ioException.getMessage());
+            Log.e(Constants.TAG, "[CLIENT THREAD] An exception has occurred:  " + ioException.getMessage());
             if (Constants.DEBUG) {
                 ioException.printStackTrace();
             }
@@ -71,5 +86,4 @@ public class ClientThread extends Thread {
             }
         }
     }
-
 }
